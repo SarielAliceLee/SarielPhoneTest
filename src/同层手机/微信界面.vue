@@ -700,8 +700,8 @@ onMounted(() => {
 .cover-image {
   width: 100%;
   height: 100%;
-  background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
-  background-size: 400% 400%;
+  background-image: url('https://testingcf.jsdelivr.net/gh/SarielAliceLee/SarielPhoneTest/src/image/朋友圈壁纸.png');
+  background-size: 100% 100%;
   animation: gradientShift 8s ease infinite;
   position: relative;
 }
