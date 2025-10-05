@@ -5,6 +5,11 @@
       "name": "编译代码并调试酒馆网页 (Chrome)",
       "type": "chrome",
       "request": "launch",
+<<<<<<< HEAD
+=======
+      "preLaunchTask": "开始任务",
+      "postDebugTask": "结束任务",
+>>>>>>> a33bed2145f0bf6e26af696e5258746d84a4755d
       "url": "http://localhost:6622",
       "disableNetworkCache": true,
       "internalConsoleOptions": "openOnSessionStart",
