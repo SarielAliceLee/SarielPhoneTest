@@ -32,7 +32,11 @@
 
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue';
+import { IMAGE_URLS } from './config';
 import './共享样式.css';
+
+// 壁纸图片URL
+const wallpaperUrl = IMAGE_URLS.WALLPAPER;
 
 // 响应式数据
 const currentTime = ref('');
@@ -89,7 +93,7 @@ onUnmounted(() => {
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: url('../image/壁纸.png');
+  background-image: v-bind('`url(${wallpaperUrl})`');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
