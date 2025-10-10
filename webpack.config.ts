@@ -5,6 +5,10 @@ import fs from 'node:fs';
 import { createRequire } from 'node:module';
 import path from 'node:path';
 import url from 'node:url';
+<<<<<<< HEAD
+=======
+import RemarkHTML from 'remark-html';
+>>>>>>> 2f1ef2b04094bd961d088d86a860dc32442cbf72
 import { Server } from 'socket.io';
 import TerserPlugin from 'terser-webpack-plugin';
 import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
@@ -228,10 +232,33 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
               exclude: /node_modules/,
             },
             {
+<<<<<<< HEAD
               test: /\.html?$/,
               use: 'html-loader',
               exclude: /node_modules/,
             },
+=======
+              test: /\.html$/,
+              use: 'html-loader',
+              exclude: /node_modules/,
+            },
+            {
+              test: /\.md$/,
+              use: [
+                {
+                  loader: 'html-loader',
+                },
+                {
+                  loader: 'remark-loader',
+                  options: {
+                    remarkOptions: {
+                      plugins: [RemarkHTML],
+                    },
+                  },
+                },
+              ],
+            },
+>>>>>>> 2f1ef2b04094bd961d088d86a860dc32442cbf72
           ].concat(
             entry.html === undefined
               ? <any[]>[

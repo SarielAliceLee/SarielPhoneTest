@@ -43,6 +43,12 @@
     "postcss-loader": "^8.2.0",
     "postcss-minify": "^1.2.0",
     "prettier": "^3.6.2",
+<<<<<<< HEAD
+=======
+    "remark": "^15.0.1",
+    "remark-html": "^16.0.1",
+    "remark-loader": "^6.0.0",
+>>>>>>> 2f1ef2b04094bd961d088d86a860dc32442cbf72
     "sass": "^1.93.2",
     "sass-loader": "^16.0.5",
     "socket.io": "^4.8.1",
