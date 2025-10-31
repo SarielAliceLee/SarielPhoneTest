@@ -5,6 +5,10 @@ import fs from 'node:fs';
 import { createRequire } from 'node:module';
 import path from 'node:path';
 import url from 'node:url';
+<<<<<<< HEAD
+=======
+import RemarkHTML from 'remark-html';
+>>>>>>> 41c8d06db546ff665912b7db0a564319e98e75f8
 import { Server } from 'socket.io';
 import TerserPlugin from 'terser-webpack-plugin';
 import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
@@ -109,7 +113,11 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
     experiments: {
       outputModule: true,
     },
+<<<<<<< HEAD
     devtool: argv.mode === 'production' ? false : 'eval-source-map',
+=======
+    devtool: argv.mode === 'production' ? 'source-map' : 'eval-source-map',
+>>>>>>> 41c8d06db546ff665912b7db0a564319e98e75f8
     watchOptions: {
       ignored: ['**/dist', '**/node_modules'],
     },
@@ -228,10 +236,33 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
               exclude: /node_modules/,
             },
             {
+<<<<<<< HEAD
               test: /\.html?$/,
               use: 'html-loader',
               exclude: /node_modules/,
             },
+=======
+              test: /\.html$/,
+              use: 'html-loader',
+              exclude: /node_modules/,
+            },
+            {
+              test: /\.md$/,
+              use: [
+                {
+                  loader: 'html-loader',
+                },
+                {
+                  loader: 'remark-loader',
+                  options: {
+                    remarkOptions: {
+                      plugins: [RemarkHTML],
+                    },
+                  },
+                },
+              ],
+            },
+>>>>>>> 41c8d06db546ff665912b7db0a564319e98e75f8
           ].concat(
             entry.html === undefined
               ? <any[]>[
@@ -334,14 +365,24 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
             'pinia',
             '@vueuse/core',
             { from: 'dedent', imports: [['default', 'dedent']] },
+<<<<<<< HEAD
+=======
+            { from: 'klona', imports: ['klona'] },
+            { from: 'vue-final-modal', imports: ['useModal'] },
+>>>>>>> 41c8d06db546ff665912b7db0a564319e98e75f8
             { from: 'zod', imports: ['z'] },
           ],
         }),
         unpluginVueComponents({
           dts: true,
           syncMode: 'overwrite',
+<<<<<<< HEAD
           resolvers: [VueUseComponentsResolver(), VueUseDirectiveResolver()],
           // globs: ['src/panel/component/*.vue'],
+=======
+          // globs: ['src/panel/component/*.vue'],
+          resolvers: [VueUseComponentsResolver(), VueUseDirectiveResolver()],
+>>>>>>> 41c8d06db546ff665912b7db0a564319e98e75f8
         }),
         new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }),
         new webpack.DefinePlugin({
@@ -428,6 +469,10 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
       const global = {
         jquery: '$',
         lodash: '_',
+<<<<<<< HEAD
+=======
+        showdown: 'showdown',
+>>>>>>> 41c8d06db546ff665912b7db0a564319e98e75f8
         toastr: 'toastr',
         vue: 'Vue',
         'vue-router': 'VueRouter',
