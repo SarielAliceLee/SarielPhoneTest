@@ -10,6 +10,13 @@ declare module '*.html' {
   const content: string;
   export default content;
 }
+<<<<<<< HEAD
+=======
+declare module '*.md' {
+  const content: string;
+  export default content;
+}
+>>>>>>> ba6a8cbd65eb2331437d53a70aa6035251541b2e
 declare module '*.css' {
   const content: unknown;
   export default content;
