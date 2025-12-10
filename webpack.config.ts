@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import HtmlInlineScriptWebpackPlugin from 'html-inline-script-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
@@ -5,6 +6,18 @@ import fs from 'node:fs';
 import { createRequire } from 'node:module';
 import path from 'node:path';
 import url from 'node:url';
+=======
+import { FSWatcher, watch } from 'chokidar';
+import HtmlInlineScriptWebpackPlugin from 'html-inline-script-webpack-plugin';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import _ from 'lodash';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import { exec } from 'node:child_process';
+import fs from 'node:fs';
+import { createRequire } from 'node:module';
+import path from 'node:path';
+import RemarkHTML from 'remark-html';
+>>>>>>> c56db99446f42940babf011c55d96bc6dd2a17c1
 import { Server } from 'socket.io';
 import TerserPlugin from 'terser-webpack-plugin';
 import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
@@ -17,9 +30,12 @@ import WebpackObfuscator from 'webpack-obfuscator';
 const require = createRequire(import.meta.url);
 const HTMLInlineCSSWebpackPlugin = require('html-inline-css-webpack-plugin').default;
 
+<<<<<<< HEAD
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+=======
+>>>>>>> c56db99446f42940babf011c55d96bc6dd2a17c1
 interface Config {
   port: number;
   entries: Entry[];
@@ -50,8 +66,15 @@ function common_path(lhs: string, rhs: string) {
 
 function glob_script_files() {
   const files: string[] = fs
+<<<<<<< HEAD
     .globSync(`src/**/index.{ts,js}`)
     .filter(file => process.env.CI !== 'true' || !fs.readFileSync(path.join(__dirname, file)).includes('@no-ci'));
+=======
+    .globSync(`src/**/index.{ts,tsx,js,jsx}`)
+    .filter(
+      file => process.env.CI !== 'true' || !fs.readFileSync(path.join(import.meta.dirname, file)).includes('@no-ci'),
+    );
+>>>>>>> c56db99446f42940babf011c55d96bc6dd2a17c1
 
   const results: string[] = [];
   const handle = (file: string) => {
@@ -101,19 +124,53 @@ function watch_it(compiler: webpack.Compiler) {
   }
 }
 
+<<<<<<< HEAD
 function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Configuration {
   const should_obfuscate = fs.readFileSync(path.join(__dirname, entry.script), 'utf-8').includes('@obfuscate');
+=======
+let watcher: FSWatcher;
+function dump_schema(compiler: webpack.Compiler) {
+  const execute = () => {
+    exec('pnpm dump', { cwd: import.meta.dirname });
+  };
+  const execute_debounced = _.debounce(execute, 500, { leading: true, trailing: false });
+  if (!compiler.options.watch) {
+    execute();
+  } else if (!watcher) {
+    watcher = watch('src', {
+      awaitWriteFinish: true,
+    }).on('all', (_event, path) => {
+      if (path.endsWith('schema.ts')) {
+        execute_debounced();
+      }
+    });
+  }
+}
+
+function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Configuration {
+  const should_obfuscate = fs
+    .readFileSync(path.join(import.meta.dirname, entry.script), 'utf-8')
+    .includes('@obfuscate');
+>>>>>>> c56db99446f42940babf011c55d96bc6dd2a17c1
   const script_filepath = path.parse(entry.script);
 
   return (_env, argv) => ({
     experiments: {
       outputModule: true,
     },
+<<<<<<< HEAD
     devtool: argv.mode === 'production' ? false : 'eval-source-map',
     watchOptions: {
       ignored: ['**/dist', '**/node_modules'],
     },
     entry: path.join(__dirname, entry.script),
+=======
+    devtool: argv.mode === 'production' ? 'source-map' : 'eval-source-map',
+    watchOptions: {
+      ignored: ['**/dist', '**/node_modules'],
+    },
+    entry: path.join(import.meta.dirname, entry.script),
+>>>>>>> c56db99446f42940babf011c55d96bc6dd2a17c1
     target: 'browserslist',
     output: {
       devtoolNamespace: 'tavern_helper_template',
@@ -128,7 +185,15 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
         return `${is_direct === true ? 'src' : 'webpack'}://${info.namespace}/${resource_path}${is_direct || is_vue_script ? '' : '?' + info.hash}`;
       },
       filename: `${script_filepath.name}.js`,
+<<<<<<< HEAD
       path: path.join(__dirname, 'dist', path.relative(path.join(__dirname, 'src'), script_filepath.dir)),
+=======
+      path: path.join(
+        import.meta.dirname,
+        'dist',
+        path.relative(path.join(import.meta.dirname, 'src'), script_filepath.dir),
+      ),
+>>>>>>> c56db99446f42940babf011c55d96bc6dd2a17c1
       chunkFilename: `${script_filepath.name}.[contenthash].chunk.js`,
       asyncChunks: true,
       clean: true,
@@ -228,6 +293,7 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
               exclude: /node_modules/,
             },
             {
+<<<<<<< HEAD
               test: /\.html?$/,
               use: 'html-loader',
               exclude: /node_modules/,
@@ -235,6 +301,31 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
           ].concat(
             entry.html === undefined
               ? <any[]>[
+=======
+              test: /\.html$/,
+              use: 'html-loader',
+              exclude: /node_modules/,
+            },
+            {
+              test: /\.md$/,
+              use: [
+                {
+                  loader: 'html-loader',
+                },
+                {
+                  loader: 'remark-loader',
+                  options: {
+                    remarkOptions: {
+                      plugins: [RemarkHTML],
+                    },
+                  },
+                },
+              ],
+            },
+          ].concat(
+            entry.html === undefined
+              ? ([
+>>>>>>> c56db99446f42940babf011c55d96bc6dd2a17c1
                   {
                     test: /\.vue\.s(a|c)ss$/,
                     use: [
@@ -269,8 +360,13 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
                     use: ['style-loader', { loader: 'css-loader', options: { url: false } }, 'postcss-loader'],
                     exclude: /node_modules/,
                   },
+<<<<<<< HEAD
                 ]
               : <any[]>[
+=======
+                ] as any[])
+              : ([
+>>>>>>> c56db99446f42940babf011c55d96bc6dd2a17c1
                   {
                     test: /\.s(a|c)ss$/,
                     use: [
@@ -290,7 +386,11 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
                     ],
                     exclude: /node_modules/,
                   },
+<<<<<<< HEAD
                 ],
+=======
+                ] as any[]),
+>>>>>>> c56db99446f42940babf011c55d96bc6dd2a17c1
           ),
         },
       ],
@@ -300,7 +400,11 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
       plugins: [
         new TsconfigPathsPlugin({
           extensions: ['.ts', '.js', '.tsx', '.jsx'],
+<<<<<<< HEAD
           configFile: path.join(__dirname, 'tsconfig.json'),
+=======
+          configFile: path.join(import.meta.dirname, 'tsconfig.json'),
+>>>>>>> c56db99446f42940babf011c55d96bc6dd2a17c1
         }),
       ],
       alias: {},
@@ -309,7 +413,11 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
       ? [new MiniCssExtractPlugin()]
       : [
           new HtmlWebpackPlugin({
+<<<<<<< HEAD
             template: path.join(__dirname, entry.html),
+=======
+            template: path.join(import.meta.dirname, entry.html),
+>>>>>>> c56db99446f42940babf011c55d96bc6dd2a17c1
             filename: path.parse(entry.html).base,
             scriptLoading: 'module',
             cache: false,
@@ -325,6 +433,10 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
     )
       .concat(
         { apply: watch_it },
+<<<<<<< HEAD
+=======
+        { apply: dump_schema },
+>>>>>>> c56db99446f42940babf011c55d96bc6dd2a17c1
         new VueLoaderPlugin(),
         unpluginAutoImport({
           dts: true,
@@ -334,14 +446,24 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
             'pinia',
             '@vueuse/core',
             { from: 'dedent', imports: [['default', 'dedent']] },
+<<<<<<< HEAD
+=======
+            { from: 'klona', imports: ['klona'] },
+            { from: 'vue-final-modal', imports: ['useModal'] },
+>>>>>>> c56db99446f42940babf011c55d96bc6dd2a17c1
             { from: 'zod', imports: ['z'] },
           ],
         }),
         unpluginVueComponents({
           dts: true,
           syncMode: 'overwrite',
+<<<<<<< HEAD
           resolvers: [VueUseComponentsResolver(), VueUseDirectiveResolver()],
           // globs: ['src/panel/component/*.vue'],
+=======
+          // globs: ['src/panel/component/*.vue'],
+          resolvers: [VueUseComponentsResolver(), VueUseDirectiveResolver()],
+>>>>>>> c56db99446f42940babf011c55d96bc6dd2a17c1
         }),
         new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }),
         new webpack.DefinePlugin({
@@ -359,6 +481,10 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
                 selfDefending: true,
                 simplify: true,
                 splitStrings: true,
+<<<<<<< HEAD
+=======
+                seed: 1,
+>>>>>>> c56db99446f42940babf011c55d96bc6dd2a17c1
               }),
             ]
           : [],
@@ -411,6 +537,10 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
         request.startsWith('/') ||
         request.startsWith('!') ||
         request.startsWith('http') ||
+<<<<<<< HEAD
+=======
+        request.startsWith('@/') ||
+>>>>>>> c56db99446f42940babf011c55d96bc6dd2a17c1
         path.isAbsolute(request) ||
         fs.existsSync(path.join(context, request)) ||
         fs.existsSync(request)
@@ -425,9 +555,19 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
       if (argv.mode !== 'production' && ['vue', 'pixi'].some(key => request.includes(key))) {
         return callback();
       }
+<<<<<<< HEAD
       const global = {
         jquery: '$',
         lodash: '_',
+=======
+      if (['react'].some(key => request.includes(key))) {
+        return callback();
+      }
+      const global = {
+        jquery: '$',
+        lodash: '_',
+        showdown: 'showdown',
+>>>>>>> c56db99446f42940babf011c55d96bc6dd2a17c1
         toastr: 'toastr',
         vue: 'Vue',
         'vue-router': 'VueRouter',
