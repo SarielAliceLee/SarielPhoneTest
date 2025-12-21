@@ -10,6 +10,13 @@ declare module '*.html' {
   const content: string;
   export default content;
 }
+<<<<<<< HEAD
+=======
+declare module '*.md' {
+  const content: string;
+  export default content;
+}
+>>>>>>> 6f04ece0949abf2098513ba3eec65028a25c9b9a
 declare module '*.css' {
   const content: unknown;
   export default content;
@@ -28,3 +35,10 @@ declare namespace z {
   export type input<T> = import('zod').input<T>;
   export type output<T> = import('zod').output<T>;
 }
+<<<<<<< HEAD
+=======
+
+declare module 'https://testingcf.jsdelivr.net/gh/StageDog/tavern_resource/dist/util/mvu_zod.js' {
+  export function registerMvuSchema(schema: z.ZodObject | (() => z.ZodObject)): void;
+}
+>>>>>>> 6f04ece0949abf2098513ba3eec65028a25c9b9a
