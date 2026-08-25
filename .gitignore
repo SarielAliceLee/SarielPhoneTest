@@ -8,5 +8,11 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+<<<<<<< HEAD
 /dist/同层手机
 /dist
+=======
+
+auto-imports.d.ts
+components.d.ts
+>>>>>>> bc44abea1c2f7980dd9a2d9b909b4ad64bc8bdee
